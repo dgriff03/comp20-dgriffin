@@ -1,3 +1,5 @@
 No colaboration
 
-Worked for:
+Worked for: 1hr
+
+all parts work
