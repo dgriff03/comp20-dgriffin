@@ -6,11 +6,21 @@
 <link rel="stylesheet" href="mspacman.css">
 <script>
 function draw(){
-	canvas = document.getElementById('game');
+	canvas = document.getElementById("game");
 	if(canvas.getContext){
 		ctx = canvas.getContext('2d');
-		ctx.fillStyle = "rgb(255, 0, 0)";
-		ctx.fillRect (50, 50, 55, 50);
+		ctx.save();
+		bigimg = new Image();
+		bigimg.src = 'sprite.png';
+		//bigimg(320,0,785,135);
+		//ctx.drawImage(bigimg,320,0,465,135,10,10,465,135);
+		ctx.drawImage(bigimg,10,10);
+	     /*           img = new Image();
+                img.src = 'nelson.jpg';
+                ctx.globalAlpha = 0.5; // Transparency
+                ctx.rotate(0.175); // Angle is in radians
+                ctx.drawImage(img, 100, 100);
+              */
 	    
 	
 	
