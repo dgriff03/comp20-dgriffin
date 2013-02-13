@@ -8,9 +8,10 @@
 function draw(){
 	canvas = document.getElementById('game');
 	if(canvas.getContext){
-		cts.canvas.getContext('2d');
+		ctx = canvas.getContext('2d');
+		ctx.fillStyle = "rgb(255, 0, 0)";
 		ctx.fillRect (50, 50, 55, 50);
-	    ctx.fillStyle = "rgb(255, 0, 0)";
+	    
 	
 	
 	}
