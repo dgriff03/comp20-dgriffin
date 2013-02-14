@@ -11,9 +11,8 @@ function draw(){
 		ctx = canvas.getContext('2d');
 		ctx.save();
 		bigimg = new Image();
-		bigimg.className = "sprite";
 		bigimg.src = 'sprite.png';
-		
+		bigimg.className = 'sprite';
 		
 		ctx.drawImage(bigimg,320,0,465,140,10,10,465,140);
 		ctx.drawImage(bigimg,82,2,17,17,50,50,17,17);
