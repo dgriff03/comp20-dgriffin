@@ -25,11 +25,11 @@ function draw_board(){
 			img = new Image();
 			img.src = 'assets/frogger_sprites.png';
 			ctx.fillStyle = "rgb(19, 19, 70)";
-			ctx.fillRect (0,0, 399, 370);
+			ctx.fillRect (0,0, 399, 275);
 			ctx.drawImage(img,0,55,399,55,0,55,399,55);
 			ctx.drawImage(img,5,165,180,25,20,185,180,25);
-			ctx.drawImage(img,5,195,120,25,90,310,120,25);
-
+			ctx.drawImage(img,5,195,120,25,90,240,120,25);
+			ctx.drawImage(img,0,119,399,35,0,275,399,35);
 			
 		}
 		else{
