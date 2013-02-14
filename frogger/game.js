@@ -31,7 +31,10 @@ function draw_board(){
 			ctx.drawImage(img,5,165,180,25,20,185,180,25);
 			ctx.drawImage(img,5,195,120,25,90,240,120,25);
 			ctx.drawImage(img,0,119,399,35,0,275,399,35);
-			
+			ctx.drawImage(img,0,119,399,35,0,475,399,35);
+			ctx.fillStyle = "rgb(00, 00, 00)";
+			ctx.fillRect (0,309,399,166);
+
 		}
 		else{
 			alert('Sorry, canvas not supported by your browser');
