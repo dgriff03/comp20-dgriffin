@@ -30,14 +30,13 @@ function draw_board(){
 			ctx.drawImage(img,0,55,399,55,0,55,399,55);		//pads
 			ctx.drawImage(img,5,165,180,25,20,185,180,25);	//log 1
 			ctx.drawImage(img,5,195,120,25,90,240,120,25); //log 2
+			ctx.fillStyle = "rgb(00, 00, 00)";
+			ctx.fillRect (0,309,399,255);//road 166
 			ctx.drawImage(img,0,119,399,35,0,275,399,35); //side road top
 			ctx.drawImage(img,0,119,399,35,0,475,399,35);//side road bottom
-			ctx.fillStyle = "rgb(00, 00, 00)";
-			ctx.fillRect (0,309,399,166);//road
 			ctx.drawImage(img,5,265,35,20,20,400,35,20);//car1
 			ctx.drawImage(img,46,265,35,20,70,350,35,20);//car2
-
-
+	
 		}
 		else{
 			alert('Sorry, canvas not supported by your browser');
