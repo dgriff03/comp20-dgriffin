@@ -34,6 +34,9 @@ function draw_board(){
 			ctx.drawImage(img,0,119,399,35,0,475,399,35);//side road bottom
 			ctx.fillStyle = "rgb(00, 00, 00)";
 			ctx.fillRect (0,309,399,166);//road
+			ctx.drawImage(img,5,265,35,20,20,400,35,20);//car1
+			ctx.drawImage(img,46,265,35,20,70,350,35,20);//car2
+
 
 		}
 		else{
