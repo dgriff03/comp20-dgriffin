@@ -11,17 +11,14 @@ function draw(){
 		ctx = canvas.getContext('2d');
 		ctx.save();
 		bigimg = new Image();
+		bigimg.className = "sprite";
 		bigimg.src = 'sprite.png';
-		//bigimg(320,0,785,135);
-		//ctx.drawImage(bigimg,320,0,465,135,10,10,465,135);
-		ctx.drawImage(bigimg,10,10);
-	     /*           img = new Image();
-                img.src = 'nelson.jpg';
-                ctx.globalAlpha = 0.5; // Transparency
-                ctx.rotate(0.175); // Angle is in radians
-                ctx.drawImage(img, 100, 100);
-              */
-	    
+		
+		
+		ctx.drawImage(bigimg,320,0,465,140,10,10,465,140);
+		ctx.drawImage(bigimg,82,2,17,17,50,50,17,17);
+		ctx.drawImage(bigimg,60,140,17,17,50,80,17,16);
+	
 	
 	
 	}
@@ -35,7 +32,7 @@ function draw(){
 </head>
 <body onload="draw()">
 <div id="game_div">
-<canvas id="game" height="565" width="399"></canvas>
+<canvas id="game" height="565" width="800"></canvas>
 </div>
 </body>
 </html>
