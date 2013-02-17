@@ -1,5 +1,24 @@
+body{
+background-color:#FFFFCC;
+}
+.section,.comp,.loc,.pos{
+	font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-size: medium; 
+}
 .section{
-color:blue;
+color:#7AAFFF;
+background-color:#B88A00;
+margin-top:25px;
+margin-bottom:25px;
+margin-right:25px;
+margin-left:25px;
+width:500px;
+height:auto;
+font:
+}
 
+.comp{
+font-weight:bold;
+text-decoration:underline;
 
 }
