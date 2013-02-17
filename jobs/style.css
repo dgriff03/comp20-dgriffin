@@ -1,7 +1,7 @@
 body{
 background-color:#FFFFCC;
 }
-.section,.comp,.loc,.pos{
+.section,.comp,.loc,.pos,.des{
 	font-family: 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: medium; 
 }
@@ -17,8 +17,12 @@ height:auto;
 font:
 }
 
-.comp{
+p{
+margin:5px;
+}
+.comp,.loc,.pos{
 font-weight:bold;
+}
+.comp{
 text-decoration:underline;
-
 }

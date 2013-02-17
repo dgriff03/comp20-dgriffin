@@ -11,9 +11,8 @@
 		Jobs = JSON.parse(str);
 		listings = document.getElementById("list");
 		length = Jobs.length;
-		console.log(length);
 	}
-	function add_new(company,location,position){
+	function add_new(company,location,position,desc){
 		newdiv = document.createElement("div");
 		newdiv.className = "section";
 		
@@ -28,14 +27,20 @@
 		newp2.appendChild(newmsg2);		
 		
 		newp3 = document.createElement("p");
-		newp2.className = "pos";
+		newp3.className = "pos";
 		newmsg3 = document.createTextNode("Position: " + position);
 		newp3.appendChild(newmsg3);
+		
+		newp4 = document.createElement("p");
+		newp4.className = "des";
+		newmsg4 = document.createTextNode("Description: " + desc);
+		newp4.appendChild(newmsg4);
 		
 		node = newdiv.firstChild;
 		newdiv.insertBefore(newp,node);
 		newdiv.insertBefore(newp2,node);
 		newdiv.insertBefore(newp3,node);
+		newdiv.insertBefore(newp4,node);
 		
 		node2 = listings.firstChild;
 		listings.insertBefore(newdiv,node2);
@@ -44,7 +49,7 @@
 	function start(){
 		parse();
 		for(var i = 0;i<length; i++){		
-			add_new(Jobs[i].company,Jobs[i].location,Jobs[i].position);
+			add_new(Jobs[i].company,Jobs[i].location,Jobs[i].position,Jobs[i].description);
 		}
 	}
 	
