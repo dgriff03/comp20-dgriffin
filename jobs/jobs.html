@@ -16,15 +16,18 @@
 	
 	function callback() {
         if (request.readyState == 4 && request.status == 200) {
-                 parse(request.responseText);
-				
+			parse();
         }
     }
 	
-	function parse(str) {
+	function parse() {
+		str = request.responseText;
 		Jobs = JSON.parse(str);
 		listings = document.getElementById("list");
 		length = Jobs.length;
+		for(i = 0;i<length; i++){
+			add_new(Jobs[i].company,Jobs[i].location,Jobs[i].position,Jobs[i].description);
+		}
 	}
 	function add_new(company,location,position,desc){
 		newdiv = document.createElement("div");
@@ -62,9 +65,7 @@
 	
 	function start(){
 		get_string();
-		for(var i = 0;i<length; i++){		
-			add_new(Jobs[i].company,Jobs[i].location,Jobs[i].position,Jobs[i].description);
-		}
+		
 	}
 	
 	
