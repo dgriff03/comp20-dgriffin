@@ -78,9 +78,27 @@
 	
 	function add_stops(){
 		stops = new Array();
+		var location
 		for(int i = 0; i < num_stops;i++){
-			
-	
-	
+				location = new Object();
+				location.Key = stop_info[i].PlatformKey;
+				location.Station = stop_info[i].StationName;
+				location.Order = stop_info[i].PlatformOrder;
+				location.Start = stop_info[i].StartOfLine;
+				location.end = stop_info[i].EndOfLine;
+				location.Branch = stop_info[i].Branch;
+				location.Direction = stop_info[i].Direction;
+				location.name = stop_info[i].stop_name;
+				location.lat = stop_info[i].stop_lat;
+				location.lon = stop_info[i].stop_lon;
+				stops[i] = location;
 		}
+		plot_stops();
 	}
+	
+	function plot_stops(){
+	
+	
+	
+	}
+	
