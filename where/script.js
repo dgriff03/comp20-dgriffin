@@ -4,6 +4,36 @@
 	var num_stops;
 	var map;
 	var trains;
+	
+	function my_location(){
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function(){
+				my_lat = position.coords.latitude;
+				my_lon = position.coords.longitude;
+			});
+		}
+	else{alert("Geolocation is not supported by this browser.");}
+  }
+	
+	
+				
+	function get_person(){
+		sucessful= true;
+		requestper = new XMLHttpRequest();
+		requestper.open("GET", "http://messagehub.herokuapp.com/a3.json", true);			requestper.send(null);
+		requestper.onreadystatechange = callbackperson;
+		
+	}
+	
+	function callbackperson() {
+		if(requestper.status == 0){sucssful = false;}
+        if (requestper.readyState == 4 && requestper.status == 200) {
+			var str = requestper.responseText;
+			person = JSON.parse(str);
+			plot_person(person);
+        }
+    }
+	
 				
 	function get_trains(){
 		request = new XMLHttpRequest();
@@ -17,6 +47,34 @@
 				parse_trains();
         }
     }
+	
+	
+	function plot_person(person){
+			var wal = 'wal.png';
+			var car = 'car.png';
+			for(i in person){
+				if(person[i].name == "Waldo"){
+				waldo = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.latitude);
+				marker = new google.maps.Marker({	
+				position: waldo,
+				title: "Waldo",
+				icon:wal,
+				});
+				marker.setMap(map);
+				}
+				if(person[i].name == "Carmen Sandiego"){
+				carmen = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.latitude);
+				marker = new google.maps.Marker({	
+				position: carmen,
+				title: "Carmen",
+				icon:car,
+				});
+				marker.setMap(map);
+				}
+			}
+}
+	
+	
 	
 	function parse_trains(){
 		var str = request.responseText;
@@ -85,7 +143,7 @@
 		connect();
 		poly.setMap(map);
 		poly2.setMap(map);
-
+		get_person();
 			
 }
 
