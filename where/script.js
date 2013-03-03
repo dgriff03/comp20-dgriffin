@@ -6,13 +6,16 @@
 	var trains;
 	
 	function my_location(){
-		if (navigator.geolocation){
+		/*if (navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(function(){
-				my_lat = position.coords.latitude;
-				my_lon = position.coords.longitude;
+				mylat = position.coords.latitude;
+				mylon = position.coords.longitude;
+				return (new google.maps.LatLng(mylat,mylon));
 			});
-		}
-	else{alert("Geolocation is not supported by this browser.");}
+		}*/
+	//else{alert("Geolocation is not supported by this browser.")
+		return (new google.maps.LatLng("42.395428","-71.142483"));
+	//}
   }
 	
 	
@@ -85,7 +88,7 @@
 	}
 	
 	function init(){
-	var cent =  new google.maps.LatLng("42.395428","-71.142483");
+	var cent = my_location();
 	var myOptions = {
 			zoom: 14, // The larger the zoom number, the bigger the zoom
 			center: cent,
