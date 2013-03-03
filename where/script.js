@@ -3,35 +3,7 @@
 	var stops = new Array();
 	var num_stops;
 	
-	
-	function init()
-						{
-				// Faneuil Hall
 				
-
-				// Set up map
-
-
-				// Create the map in the "map_canvas" <div>
-				
-/*
-				// Create a marker				
-				var marker = new google.maps.Marker({
-					position: landmark,
-					title: "Faneuil Hall, Boston, MA"
-				});
-				marker.setMap(map);
-
-				// This is a global info window...
-				var infowindow = new google.maps.InfoWindow();
-
-				// Open info window on click of marker
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(marker.title);
-					infowindow.open(map, marker);
-				});*/
-			}
-			
 	function get_trains(){
 		request = new XMLHttpRequest();
 		request.open("GET", "http://mbtamap-cedar.herokuapp.com/mapper/redline.json", true);
@@ -62,26 +34,27 @@
 	function add_stops(){
 		num_stops = stop_info.length;
 		var location;
-		for(i = 0; i < num_stops;i++){
+		for(var i = 0; i < num_stops;i++){
 				if(stop_info[i].Line == "Red"){
 					stops[i]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon};
 				}			
 		}
 		num_stops = stops.length;
+		stops = stops.sort(function(a,b){return a.Order - b.Order});
 	}
 	
 	function plot_stops(){
 		add_stops();
 		var image = 'image.png';
-		var cent =  new google.maps.LatLng(42.407457,-71.10864);
+		var cent =  new google.maps.LatLng(stops[0].lat,stops[0].lon);
 		var myOptions = {
 			zoom: 14, // The larger the zoom number, the bigger the zoom
 			center: cent,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		//var infowindow = new google.maps.InfoWindow();
-		for(i = 0; i < num_stops; i++){
+		
+		for(var i = 0; i < num_stops; i++){
 			var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
 			var marker = new google.maps.Marker({
 				position: landmark,
@@ -90,5 +63,45 @@
 			});
 			marker.setMap(map);
 		}
+		
+	//	var infowindow = new google.maps.InfoWindow();
+		
+	//	google.maps.event.addListener(marker, 'click', function() {
+		//	infowindow.setContent();
+			//infowindow.open(map, marker);
+		//});
+}
+function output(){
+add_stops();
+
+for(var i = 0; i <num_stops; i++){
+console.log(i + ":  " + stops[i].Start + " "  + stops[i].End + " " + stops[i].Order);
+}
+
+}
+
+
+
+function connect(){
+
+	var flightPlanCoordinates = new Array();
+	var counter = 1;
+	var j;
+	for(i = 0; i < num_stops; i++){
+		if(stops[i].Start == TRUE){
+			j = i;
+				break;
+		}
 	}
+	
+	
+	
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+  flightPath.setMap(map);
+  }
 	
