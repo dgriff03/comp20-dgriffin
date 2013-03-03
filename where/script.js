@@ -67,18 +67,21 @@
 			marker = new google.maps.Marker({
 				position: landmark,
 				title: stops[i].Station,
-				icon:image
+				icon:image,
+				mark_info: stops[i];
 			});
+				
 			marker.setMap(map);
 			google.maps.event.addListener(marker, 'click', function(){
 				var infowindow = new google.maps.InfoWindow();
 				var table_string = '<table border="1">' +
-				'<tr><th>' +this.title + '</th><th></th></tr>'+
-				'<tr><td>row 1, cell 1</td><td>row 1, cell 2</td></tr>'+
-				'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td></tr>'+
+				'<tr><th></th><th>' +this.title + '</th><th></th></tr>'+
+				'<tr><td>'+this.info.Direction+'</td><td>row 1, cell 2</td><td></td></tr>'+
+				'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td><td></td></tr>'+
 				'</table>';
 				infowindow.setContent(table_string);
 				infowindow.open(map, this);}); 
+			
 		}
 
 		
@@ -89,20 +92,24 @@
 			
 }
 
-function add_window(num){
-		console.log(markers[num].title);
+//{"Line":"Red","Trip":288,"PlatformKey":"RNQUS","InformationType":"Predicted","Time":"3/3/2013 12:13:05 PM","TimeRemaining":"00:02:56","Revenue":"Revenue","Route":"0"}
+function table_info;(){
+	var table;
+	var string;
+	var bound;
+	var arrival;
+	for(var i = 0; i < num_trains; i++){
+			//check if station
+			//look at direction
+			//look at arrival
+			//add to table
+	}
+
 }
 
-function Table(num){
-	console.log('<table border="1">' +
-'<tr><th>' +num + '</th><th></th></tr>'+
-'<tr><td>row 1, cell 1</td><td>row 1, cell 2</td></tr>'+
-'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td></tr>'+
-'</table>');
+function add_to_table(variable){
 
 }
-
-
 
 function connect(){
 	var redlinePath = new Array();
