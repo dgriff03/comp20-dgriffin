@@ -29,9 +29,6 @@
 	function init(){
 		get_trains();
 	}
-
-	//stops = stops.sort(function(a,b){return a.Order - b.Order});
-	
 	
 	function add_stops(){
 		num_stops = stop_info.length;
@@ -57,6 +54,7 @@
 		var image = 'image.png';
 		var cent =  new google.maps.LatLng(stops[0].lat,stops[0].lon);
 		redline_path = new Array();
+		
 		var myOptions = {
 			zoom: 14, // The larger the zoom number, the bigger the zoom
 			center: cent,
@@ -66,25 +64,43 @@
 		
 		for(var i = 0; i < num_stops; i++){
 			var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
-			var marker = new google.maps.Marker({
+			marker = new google.maps.Marker({
 				position: landmark,
-				title: stops[i].Name,
+				title: stops[i].Station,
 				icon:image
 			});
 			marker.setMap(map);
+			google.maps.event.addListener(marker, 'click', function(){
+				var infowindow = new google.maps.InfoWindow();
+				var table_string = '<table border="1">' +
+				'<tr><th>' +this.title + '</th><th></th></tr>'+
+				'<tr><td>row 1, cell 1</td><td>row 1, cell 2</td></tr>'+
+				'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td></tr>'+
+				'</table>';
+				infowindow.setContent(table_string);
+				infowindow.open(map, this);}); 
 		}
+
+		
 		connect();
 		poly.setMap(map);
 		poly2.setMap(map);
-		
-	//	var infowindow = new google.maps.InfoWindow();
-		
-	//	google.maps.event.addListener(marker, 'click', function() {
-		//	infowindow.setContent();
-			//infowindow.open(map, marker);
-		//});
+
+			
 }
 
+function add_window(num){
+		console.log(markers[num].title);
+}
+
+function Table(num){
+	console.log('<table border="1">' +
+'<tr><th>' +num + '</th><th></th></tr>'+
+'<tr><td>row 1, cell 1</td><td>row 1, cell 2</td></tr>'+
+'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td></tr>'+
+'</table>');
+
+}
 
 
 
@@ -107,7 +123,6 @@ function connect(){
 			j++;
 		}
 	}
-
 	
 	var polyOptions = {
 		path: redlinePath,
