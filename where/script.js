@@ -3,12 +3,13 @@
 	var stops = new Array();
 	var num_stops;
 	var map;
+	var trains;
 				
 	function get_trains(){
 		request = new XMLHttpRequest();
 		request.open("GET", "http://mbtamap-cedar.herokuapp.com/mapper/redline.json", true);
 		request.send(null);
-		request.onreadystatechange = callback();
+		request.onreadystatechange = callback;
 	}
 		
 	function callback() {
@@ -21,26 +22,35 @@
 		var str = request.responseText;
 		trains = JSON.parse(str);
 		num_trains = trains.length;
-		add_trains();
+		add_stops();
+		
 	}
 	
-	function add_trains(){
-	
+	function init(){
+		get_trains();
 	}
 
+	//stops = stops.sort(function(a,b){return a.Order - b.Order});
 	
-
 	
 	function add_stops(){
 		num_stops = stop_info.length;
 		var location;
+		var information;
 		for(var i = 0; i < num_stops;i++){
+				for(var j = 0; j < num_trains; j++){
+					if(trains[j].PlatformKey == stop_info[i].PlatformKey){
+						information = trains[j];
+					}
+			
+				}
 				if(stop_info[i].Line == "Red"){
-					stops[i]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon};
-				}			
+					stops[i]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon,info:information};
+				}	
+				
 		}
 		num_stops = stops.length;
-		//stops = stops.sort(function(a,b){return a.Order - b.Order});
+		
 	}
 	
 	function plot_stops(){
@@ -75,14 +85,7 @@
 			//infowindow.open(map, marker);
 		//});
 }
-function output(){
-add_stops();
 
-for(var i = 0; i <num_stops; i += 2){
-console.log(i + ":  " + stops[i].Start + " "  + stops[i].End + " " + stops[i].Order);
-}
-
-}
 
 
 
