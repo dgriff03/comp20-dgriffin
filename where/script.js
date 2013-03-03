@@ -27,24 +27,35 @@
 	}
 	
 	function init(){
+	var cent =  new google.maps.LatLng("42.395428","-71.142483");
+	var myOptions = {
+			zoom: 14, // The larger the zoom number, the bigger the zoom
+			center: cent,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 		get_trains();
 	}
 	
 	function add_stops(){
 		num_stops = stop_info.length;
 		var location;
-		var information;
+		var key1;
+		var key2;
+		var information = new Array();
 		for(var i = 0; i < num_stops;i++){
-				for(var j = 0; j < num_trains; j++){
-					if(trains[j].PlatformKey == stop_info[i].PlatformKey){
-						information = trains[j];
-					}
-			
-				}
+
 				if(stop_info[i].Line == "Red"){
+					for(var j = 0; j < num_trains; j++){
+						key1 = trains[j].PlatformKey.slice(0,3);
+						key2 =  stop_info[i].PlatformKey.slice(0,3);
+						
+						if(key1 == key2){
+							information.push(trains[j]);
+					}}
 					stops[i]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon,info:information};
+					information = [];
 				}	
-				
 		}
 		num_stops = stops.length;
 		plot_stops();
@@ -52,33 +63,19 @@
 	
 	function plot_stops(){
 		var image = 'image.png';
-		var cent =  new google.maps.LatLng(stops[0].lat,stops[0].lon);
 		redline_path = new Array();
-		
-		var myOptions = {
-			zoom: 14, // The larger the zoom number, the bigger the zoom
-			center: cent,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		
 		for(var i = 0; i < num_stops; i++){
 			var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
 			marker = new google.maps.Marker({
 				position: landmark,
 				title: stops[i].Station,
 				icon:image,
-				mark_info: stops[i];
+				mark_info: stops[i]
 			});
-				
 			marker.setMap(map);
 			google.maps.event.addListener(marker, 'click', function(){
 				var infowindow = new google.maps.InfoWindow();
-				var table_string = '<table border="1">' +
-				'<tr><th></th><th>' +this.title + '</th><th></th></tr>'+
-				'<tr><td>'+this.info.Direction+'</td><td>row 1, cell 2</td><td></td></tr>'+
-				'<tr><td>row 2, cell 1</td><td>row 2, cell 2</td><td></td></tr>'+
-				'</table>';
+				var table_string = table_info(this.mark_info);
 				infowindow.setContent(table_string);
 				infowindow.open(map, this);}); 
 			
@@ -93,19 +90,26 @@
 }
 
 //{"Line":"Red","Trip":288,"PlatformKey":"RNQUS","InformationType":"Predicted","Time":"3/3/2013 12:13:05 PM","TimeRemaining":"00:02:56","Revenue":"Revenue","Route":"0"}
-function table_info;(){
+function table_info(stop){
 	var table;
 	var string;
 	var bound;
 	var arrival;
-	for(var i = 0; i < num_trains; i++){
-			//check if station
-			//look at direction
-			//look at arrival
-			//add to table
+	table = '<table border="1">'+'<tr><th>' +stop.Station + '</th></tr>';
+	for(i in stop.info){
+		string = stop.info[i].PlatformKey;
+		if(string.charAt(string.length-1) == 'N'){
+			bound = "NB";
+		}
+		if(string.charAt(string.length-1) == 'S'){
+			bound = "SB";
+		}
+		arrival = stop.info[i].TimeRemaining;
+		table = table +	'<tr><td>'+bound+'</td><td>'+arrival+'</td></tr>'
 	}
-
-}
+	table = table + '</table>';
+	return table;
+}	
 
 function add_to_table(variable){
 
