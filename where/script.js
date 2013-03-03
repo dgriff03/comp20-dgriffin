@@ -66,7 +66,6 @@
 		}
 		connect();
 		poly.setMap(map);
-		poly2.setMap(map);
 		
 	//	var infowindow = new google.maps.InfoWindow();
 		
@@ -87,32 +86,21 @@ console.log(i + ":  " + stops[i].Start + " "  + stops[i].End + " " + stops[i].Or
 
 
 function connect(){
-	var redlinePath1 = new Array();
-	var j
-	for(i = 0; i < 26; i += 2){
-		var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
-		redlinePath1[i] = landmark;
-		j = i
-	}
-	var redlinePath2 = new Array()
-	for(i = j; i < num_stops; i += 2){
-		var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
-		redlinePath2[i] = landmark;
+	var redlinePath = new Array();
+	for(i = 0; i < num_stops; i++){
+		if((stops[i].Branch == "Trunk")  || (stops[i].Branch == "Ashmont")){ 
+			var landmark = new google.maps.LatLng(stops[i].lat, stops[i].lon);
+			redlinePath[i] = landmark;
+		}
 	}
 	
 	var polyOptions = {
-		path: redlinePath1,
-		strokeColor: "#FF0000",	
-		strokeOpacity: 1.0,
-		strokeWeight: 2
-  };
-  	var polyOptions2 = {
-		path: redlinePath2,
+		path: redlinePath,
 		strokeColor: "#FF0000",	
 		strokeOpacity: 1.0,
 		strokeWeight: 2
   };
 	poly = new google.maps.Polyline(polyOptions);
-	poly2 = new google.maps.Polyline(polyOptions);
+	
   }
 	
