@@ -50,11 +50,10 @@
 				
 		}
 		num_stops = stops.length;
-		
+		plot_stops();
 	}
 	
 	function plot_stops(){
-		add_stops();
 		var image = 'image.png';
 		var cent =  new google.maps.LatLng(stops[0].lat,stops[0].lon);
 		redline_path = new Array();
