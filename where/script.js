@@ -19,6 +19,8 @@
 
 	
 	function my_location(){
+			mylat = "42.395428";
+			mylon = "-71.142483";
 		if (navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(function(){
 				mylat = position.coords.latitude;
@@ -26,8 +28,7 @@
 			});
 		}
 		else{alert("Geolocation is not supported by this browser.");
-			mylat = "42.395428";
-			mylon = "-71.142483";
+
 			}
 		return (new google.maps.LatLng(mylat,mylon));
   }
