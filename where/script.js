@@ -5,6 +5,29 @@
 	var map;
 	var trains;
 	
+
+	function init(){
+		var cent = my_location();
+		var myOptions = {
+			zoom: 14, // The larger the zoom number, the bigger the zoom
+			center: cent,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		get_trains();
+		marker = new google.maps.Marker({	
+			position: cent,
+			title: "You",
+		});
+		marker.setMap(map);
+		var message = shortest_distance();
+		var infowindow = new google.maps.InfoWindow();
+		infowindow.setContent(message);
+		infowindow.open(map, marker); 
+		
+	}
+
+	
 	function my_location(){
 		/*if (navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(function(){
@@ -38,6 +61,29 @@
 	return d;
 	}
 	
+	function shortest_distance(){
+		var dist;
+		var min_dist;
+		var min_stat;
+		
+		dist = distance(stop_info[0].stop_lat,stop_info[0].stop_lon,mylat,mylon);
+		min_dist = dist;
+		min_stat = stop_info[0].StationName;
+		for(var i = 1; i < num_stops; i++){
+			dist = distance(stops[i].lat,stops[i].lon,mylat,mylon);
+			console.log(dist);
+			if(dist < min_dist){
+				min_dist = dist;
+				min_stat = stops[i].Station;
+			}
+		}
+		min_dist = min_dist * 0.621371;
+		var message = "The closest T location is " + min_stat +
+					" which is located approximately " + min_dist +
+					" miles away";
+		return message;
+	}
+
 	
 				
 	function get_person(){
@@ -58,22 +104,7 @@
         }
     }
 	
-				
-	function get_trains(){
-		request = new XMLHttpRequest();
-		request.open("GET", "http://mbtamap-cedar.herokuapp.com/mapper/redline.json", true);
-		request.send(null);
-		request.onreadystatechange = callback;
-	}
-		
-	function callback() {
-        if (request.readyState == 4 && request.status == 200) {
-				parse_trains();
-        }
-    }
-	
-	
-	function plot_person(person){
+function plot_person(person){
 			var wal = 'wal.png';
 			var car = 'car.png';
 			var message;
@@ -109,9 +140,21 @@
 				infowindow.open(map, this);}); 
 				}	
 			}
-}
-	
-	
+}				
+
+
+	function get_trains(){
+		request = new XMLHttpRequest();
+		request.open("GET", "http://mbtamap-cedar.herokuapp.com/mapper/redline.json", true);
+		request.send(null);
+		request.onreadystatechange = callback;
+	}
+		
+	function callback() {
+        if (request.readyState == 4 && request.status == 200) {
+				parse_trains();
+        }
+    }
 	
 	function parse_trains(){
 		var str = request.responseText;
@@ -121,28 +164,13 @@
 		
 	}
 	
-	function init(){
-		var cent = my_location();
-		var myOptions = {
-			zoom: 14, // The larger the zoom number, the bigger the zoom
-			center: cent,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		marker = new google.maps.Marker({	
-			position: cent,
-			title: "You",
-		});
-	marker.setMap(map);
-		get_trains();
-	}
-	
 	function add_stops(){
 		num_stops = stop_info.length;
 		var location;
 		var key1;
 		var key2;
 		var information = new Array();
+		var z = 0;
 		for(var i = 0; i < num_stops;i++){
 
 				if(stop_info[i].Line == "Red"){
@@ -153,8 +181,9 @@
 						if(key1 == key2){
 							information.push(trains[j]);
 					}}
-					stops[i]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon,info:information};
+					stops[z]={Key:stop_info[i].PlatformKey,Station:stop_info[i].StationName,Order:stop_info[i].PlatformOrder,Start:stop_info[i].StartOfLine,End:stop_info[i].EndOfLine,Branch:stop_info[i].Branch,Direction:stop_info[i].Direction,Name:stop_info[i].stop_name,lat:stop_info[i].stop_lat,lon:stop_info[i].stop_lon,info:information};
 					information = [];
+					z++;
 				}	
 		}
 		num_stops = stops.length;
@@ -186,10 +215,8 @@
 		poly.setMap(map);
 		poly2.setMap(map);
 		get_person();
-			
 }
 
-//{"Line":"Red","Trip":288,"PlatformKey":"RNQUS","InformationType":"Predicted","Time":"3/3/2013 12:13:05 PM","TimeRemaining":"00:02:56","Revenue":"Revenue","Route":"0"}
 function table_info(stop){
 	var table;
 	var string;
@@ -211,9 +238,6 @@ function table_info(stop){
 	return table;
 }	
 
-function add_to_table(variable){
-
-}
 
 function connect(){
 	var redlinePath = new Array();
