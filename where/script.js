@@ -14,33 +14,22 @@
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		get_trains();
-		marker = new google.maps.Marker({	
-			position: cent,
-			title: "You",
-		});
-		marker.setMap(map);
-		var message = shortest_distance();
-		var infowindow = new google.maps.InfoWindow();
-		infowindow.setContent(message);
-		infowindow.open(map, marker); 
-		
+		get_trains();		
 	}
 
 	
 	function my_location(){
-		/*if (navigator.geolocation){
+		if (navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(function(){
 				mylat = position.coords.latitude;
 				mylon = position.coords.longitude;
-				return (new google.maps.LatLng(mylat,mylon));
 			});
-		}*/
-	//else{alert("Geolocation is not supported by this browser.");
-		mylat = "42.395428";
-		mylon = "-71.142483";
+		}
+		else{alert("Geolocation is not supported by this browser.");
+			mylat = "42.395428";
+			mylon = "-71.142483";
+			}
 		return (new google.maps.LatLng(mylat,mylon));
-	//}
   }
 	
 	
@@ -65,25 +54,48 @@
 		var dist;
 		var min_dist;
 		var min_stat;
-		
-		dist = distance(stop_info[0].stop_lat,stop_info[0].stop_lon,mylat,mylon);
-		min_dist = dist;
-		min_stat = stop_info[0].StationName;
-		for(var i = 1; i < num_stops; i++){
+		var min_lon;
+		var min_lat;
+		dist = distance(stops[0].lan,stops[0].stop_lon,mylat,mylon);
+		for(var i = 0; i < num_stops; i++){
 			dist = distance(stops[i].lat,stops[i].lon,mylat,mylon);
-			console.log(dist);
+			if(i == 0){ min_dist = dist; min_stat =  stops[i].Station; min_lon =stops[i].lon; min_lat = stops[i].lat }
 			if(dist < min_dist){
 				min_dist = dist;
 				min_stat = stops[i].Station;
+				min_lon =stops[i].lon;
+				min_lat = stops[i].lat
 			}
 		}
 		min_dist = min_dist * 0.621371;
 		var message = "The closest T location is " + min_stat +
 					" which is located approximately " + min_dist +
 					" miles away";
-		return message;
+		marker = new google.maps.Marker({	
+			position: my_location(),
+			title: "You",
+		});
+		marker.setMap(map);
+		var infowindow = new google.maps.InfoWindow();
+		infowindow.setContent(message);
+		infowindow.open(map, marker); 
+		connect_shortest(min_lat,min_lon);
 	}
 
+	function connect_shortest(lat,lon){
+		var flightPlanCoordinates = [
+			new google.maps.LatLng(lat,lon),
+			new google.maps.LatLng(mylat,mylon)
+			];
+		var flightPath = new google.maps.Polyline({
+			path: flightPlanCoordinates,
+			strokeColor: "#000000",
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+			});
+		flightPath.setMap(map);
+		get_person();
+	}
 	
 				
 	function get_person(){
@@ -214,7 +226,7 @@ function plot_person(person){
 		connect();
 		poly.setMap(map);
 		poly2.setMap(map);
-		get_person();
+		shortest_distance();
 }
 
 function table_info(stop){
