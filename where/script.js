@@ -13,17 +13,38 @@
 				return (new google.maps.LatLng(mylat,mylon));
 			});
 		}*/
-	//else{alert("Geolocation is not supported by this browser.")
-		return (new google.maps.LatLng("42.395428","-71.142483"));
+	//else{alert("Geolocation is not supported by this browser.");
+		mylat = "42.395428";
+		mylon = "-71.142483";
+		return (new google.maps.LatLng(mylat,mylon));
 	//}
   }
+	
+	
+	function distance(lat2,lon2,lat1,lon1){
+		Number.prototype.toRad = function() {
+		return this * Math.PI / 180;
+		}
+	var R = 6371; // km
+	var dLat = (lat2-lat1).toRad();
+	var dLon = (lon2-lon1).toRad();
+	var lat1 = lat1* Math.PI / 180;
+	var lat2 = lat2* Math.PI / 180;
+
+	var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	var d = R * c;
+	return d;
+	}
 	
 	
 				
 	function get_person(){
 		sucessful= true;
 		requestper = new XMLHttpRequest();
-		requestper.open("GET", "http://messagehub.herokuapp.com/a3.json", true);			requestper.send(null);
+		requestper.open("GET", "http://messagehub.herokuapp.com/a3.json", true);			
+		requestper.send(null);
 		requestper.onreadystatechange = callbackperson;
 		
 	}
@@ -55,25 +76,38 @@
 	function plot_person(person){
 			var wal = 'wal.png';
 			var car = 'car.png';
+			var message;
+			var empty = true;
+			var dist;
 			for(i in person){
 				if(person[i].name == "Waldo"){
-				waldo = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.latitude);
+				waldo = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.longitude);
 				marker = new google.maps.Marker({	
 				position: waldo,
 				title: "Waldo",
 				icon:wal,
+				dist:distance(person[i].loc.latitude, person[i].loc.longitude,mylat,mylon)
 				});
 				marker.setMap(map);
+				google.maps.event.addListener(marker, 'click', function(){
+				var infowindow = new google.maps.InfoWindow();
+				infowindow.setContent(this.dist);
+				infowindow.open(map, this);}); 
 				}
 				if(person[i].name == "Carmen Sandiego"){
-				carmen = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.latitude);
+				carmen = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.longitude);
 				marker = new google.maps.Marker({	
 				position: carmen,
 				title: "Carmen",
 				icon:car,
+				dist:distance(person[i].loc.latitude, person[i].loc.longitude,mylat,mylon)
 				});
 				marker.setMap(map);
-				}
+				google.maps.event.addListener(marker, 'click', function(){
+				var infowindow = new google.maps.InfoWindow();
+				infowindow.setContent(this.dist);
+				infowindow.open(map, this);}); 
+				}	
 			}
 }
 	
