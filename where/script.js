@@ -122,13 +122,18 @@
 	}
 	
 	function init(){
-	var cent = my_location();
-	var myOptions = {
+		var cent = my_location();
+		var myOptions = {
 			zoom: 14, // The larger the zoom number, the bigger the zoom
 			center: cent,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		marker = new google.maps.Marker({	
+			position: cent,
+			title: "You",
+		});
+	marker.setMap(map);
 		get_trains();
 	}
 	
