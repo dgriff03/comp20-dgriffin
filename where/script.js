@@ -19,8 +19,8 @@
 
 	
 	function my_location(){
-			mylat = "42.395428";
-			mylon = "-71.142483";
+			mylat = "42.407593";
+			mylon = "-71.118795";
 		if (navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(function(){
 				mylat = position.coords.latitude;
@@ -132,7 +132,7 @@ function plot_person(person){
 				});
 				marker.setMap(map);
 				google.maps.event.addListener(marker, 'click', function(){
-				message = this.title + ": " +this.dist;
+				message = this.title + ": " +this.dist + "km";
 				var infowindow = new google.maps.InfoWindow();
 				infowindow.setContent(message);
 				infowindow.open(map, this);}); 
@@ -147,7 +147,7 @@ function plot_person(person){
 				});
 				marker.setMap(map);
 				google.maps.event.addListener(marker, 'click', function(){
-				message = this.title + ": " +this.dist;
+				message = this.title + ": " +this.dist+ "km";
 				var infowindow = new google.maps.InfoWindow();
 				infowindow.setContent(message);
 				infowindow.open(map, this);}); 
