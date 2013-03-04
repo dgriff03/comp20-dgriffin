@@ -77,8 +77,6 @@
 			var wal = 'wal.png';
 			var car = 'car.png';
 			var message;
-			var empty = true;
-			var dist;
 			for(i in person){
 				if(person[i].name == "Waldo"){
 				waldo = new google.maps.LatLng(person[i].loc.latitude, person[i].loc.longitude);
@@ -90,8 +88,9 @@
 				});
 				marker.setMap(map);
 				google.maps.event.addListener(marker, 'click', function(){
+				message = this.title + ": " +this.dist;
 				var infowindow = new google.maps.InfoWindow();
-				infowindow.setContent(this.dist);
+				infowindow.setContent(message);
 				infowindow.open(map, this);}); 
 				}
 				if(person[i].name == "Carmen Sandiego"){
@@ -104,8 +103,9 @@
 				});
 				marker.setMap(map);
 				google.maps.event.addListener(marker, 'click', function(){
+				message = this.title + ": " +this.dist;
 				var infowindow = new google.maps.InfoWindow();
-				infowindow.setContent(this.dist);
+				infowindow.setContent(message);
 				infowindow.open(map, this);}); 
 				}	
 			}
