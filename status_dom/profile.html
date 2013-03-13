@@ -10,16 +10,32 @@ function addnew(){
 	var time = new Date();
 	time = (time.getMonth() + 1) + "/"+ time.getDate() +"/"+ time.getFullYear() +
 	" " + time.getHours() + ":" + time.getMinutes();
-	var newp = document.createElement("p");
-	var newmsg = document.createTextNode(time + " - " +msg);
-	newp.appendChild(newmsg);
-	var node = document.getElementById("status").firstChild;
-	document.getElementById("status").insertBefore(newp,node);
+	newmsg = time + " - " +msg;
+	localStorage.setItem(new Date(),newmsg);
+	add(false,newmsg)
+}
+function add(start,msg){
+	if(start){
+		for(key in localStorage){
+			var newp = document.createElement("p");
+			var newmsg = document.createTextNode(localStorage[key]);
+			newp.appendChild(newmsg);
+			var node = document.getElementById("status").firstChild;
+			document.getElementById("status").insertBefore(newp,node);
+		}
+	}
+	else{
+		var newp = document.createElement("p");
+		var newmsg = document.createTextNode(msg);
+		newp.appendChild(newmsg);
+		var node = document.getElementById("status").firstChild;
+		document.getElementById("status").insertBefore(newp,node);
+	}
 }
 </script>
 </head>
 
-<body>
+<body onload = "add(true)">
 	<h1>Fecebook</h1>
 	<div id="nav">
 		<ul>
