@@ -1,7 +1,15 @@
+var img = new Image();
+var frog1;
+
+
 function start_game(){
-	initialize();
-	draw_board();
-	setInterval("draw_game()", 50 );
+	img.src = 'assets/frogger_sprites.png';
+	img.onload = function(){
+		frog1 = new frog(0,185,485);
+		initialize();
+		draw_board();
+		setInterval("draw_game()", 50 );
+	}
 }
 
 var move_value = 4;
@@ -210,9 +218,31 @@ for(var i = 0; i < 5; i++){
 //left right left right left
 }
 
-function frog(d){	//d is the direction
+function move_frog(){
 
+}
 
+function frog(d,x,y){	//d is the direction
+this.forward = function(){
+	this.cut6 -= 34;
+}
+this.back = function(){
+	this.cut6 += 34;
+}
+if(d == 0){
+	this.cut1=10;
+	this.cut2=367;
+	this.cut3=25;
+	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+	this.cut5=x
+	this.cut6=y;
+this.draw = function(){
+		ctx.drawImage(img,this.cut1,this.cut2,this.cut3,this.cut4,
+		this.cut5,this.cut6,this.cut7,this.cut8);
+}
 
 }
 
@@ -240,39 +270,47 @@ function move(){
 			log_array[i][2].left();
 		}
 	}
-
 }
 
 
 function draw_game(){
-ctx.fillStyle = "rgb(19, 19, 70)";
-			ctx.fillRect (0,0, 399, 275);//water
-			ctx.drawImage(img,12,12,327,40,15,15,325,40);	//frogger
-			ctx.drawImage(img,0,55,399,55,0,55,399,50);		//pads
-			ctx.fillStyle = "rgb(00, 00, 00)";
-			ctx.fillRect (0,309,399,255);//road 166
-			move();
-			ctx.drawImage(img,0,119,399,35,0,275,399,35); //side road top
-			ctx.drawImage(img,0,119,399,35,0,475,399,35);//side road bottom
-			ctx.drawImage(img,10,335,25,20,0,516,20,15);//life1
-			ctx.drawImage(img,10,335,25,20,20,516,20,15);//life2
-			ctx.drawImage(img,10,335,25,20,40,516,20,15);//life3
-			ctx.fillStyle="rgb(51, 204, 0)";
-			ctx.font = "24px Arial Bold";
-			ctx.fillText("Level" + Level, 60, 530);
-			ctx.font = "12px Arial Bold";
-			ctx.fillText("Score:" + Score, 0, 560);
-			ctx.fillText("High Score" + High_Score, 50, 560);
-
+	ctx.fillStyle = "rgb(19, 19, 70)";
+	ctx.fillRect (0,0, 399, 275);//water
+	ctx.drawImage(img,12,12,327,40,15,15,325,40);	//frogger
+	ctx.drawImage(img,0,55,399,55,0,55,399,50);		//pads
+	ctx.fillStyle = "rgb(00, 00, 00)";
+	ctx.fillRect (0,309,399,255);//road 166
+	ctx.drawImage(img,0,119,399,35,0,275,399,35); //side road top
+	ctx.drawImage(img,0,119,399,35,0,475,399,35);//side road bottom
+	ctx.drawImage(img,10,335,25,20,0,516,20,15);//life1
+	ctx.drawImage(img,10,335,25,20,20,516,20,15);//life2
+	ctx.drawImage(img,10,335,25,20,40,516,20,15);//life3
+	ctx.fillStyle="rgb(51, 204, 0)";
+	ctx.font = "24px Arial Bold";
+	ctx.fillText("Level" + Level, 60, 530);
+	ctx.font = "12px Arial Bold";
+	ctx.fillText("Score:" + Score, 0, 560);
+	ctx.fillText("High Score" + High_Score, 50, 560);
+	move();
+	frog1.draw();
 }
+//a37 w38 d39 s40
+
+ document.addEventListener("keydown", function(event) {
+    if (event.keyCode == 38) {
+      frog1.forward();
+    }
+	if (event.keyCode == 40) {
+      frog1.back();
+    }
+	console.log(event.keyCode);
+ });
 
 function draw_board(){
 		canvas = document.getElementById('game');
 		if(canvas.getContext){
 			ctx = canvas.getContext('2d');
 			ctx.save();
-			img = new Image();
-			img.src = 'assets/frogger_sprites.png';
 			draw_game();
 		}
 		else{
