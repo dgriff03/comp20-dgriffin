@@ -98,14 +98,14 @@ if(car_num == 1){
 	this.cut1=46;
 	this.cut2=265;
 	this.cut3=35;
-	this.cut4=20;
+	this.cut4=25;
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
 if(car_num == 2){
-	this.cut1=46;
-	this.cut2=265;
-	this.cut3=35;
+	this.cut1=105
+	this.cut2=300
+	this.cut3=45;
 	this.cut4=20;
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
@@ -115,14 +115,28 @@ if(car_num == 2){
 	this.draw = function(){
 		ctx.drawImage(img,this.cut1,this.cut2,this.cut3,this.cut4,
 		this.cut5,this.cut6,this.cut7,this.cut8);
-	}
+	}	
 }
 
 function make_cars(){
+var space;
 for(var i = 0; i < 5; i++){
-	car1 = new car(i%2,in_x(carx + i * 40),cary + 33 * i);
-	car2 = new car(i%2,in_x(carx + (i+1) * 40),cary + 33 * i);
-	car3 = new car(i%2,in_x(carx + (i+2) * 40),cary + 33 * i);
+	if( i %2 == 0){
+		space = 75;
+	}
+	else{
+		space = 150;
+	}
+	if( i != 0){
+		car1 = new car(i%2,in_x(carx + i * space),cary + 33 * i);
+		car2 = new car(i%2,in_x(carx + (i+1) * space),cary + 33 * i);
+		car3 = new car(i%2,in_x(carx + (i+2) * space),cary + 33 * i);
+	}
+	else{
+		car1 = new car(2,in_x(carx),cary + 33 * i);
+		car2 = new car(2,in_x(carx +120),cary + 33 * i);
+		car3 = new car(2,in_x(carx + 2 * 120),cary + 33 * i);
+	}
 	var	row = [car1,car2,car3];
 	car_array[i] = row;
 }
