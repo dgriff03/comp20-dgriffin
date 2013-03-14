@@ -1,7 +1,6 @@
 var img = new Image();
 var frog1;
 
-
 function start_game(){
 	img.src = 'assets/frogger_sprites.png';
 	img.onload = function(){
@@ -13,6 +12,35 @@ function start_game(){
 }
 
 var move_value = 4;
+
+
+//returns 0 if no collision
+//returns 1 if hits car or hits water
+//returns 2 if hits log --must also be on water
+//returns 3 if hits end
+function collision(){
+var x = frog1.cut5;
+var y = frog1.cut6;
+for(i in car_array){
+	for(j in car_array[i]){
+			if( x >= car_array[i][j].cut5 && x <= (car_array[i][j].cut5 + car_array[i][j].cut3)
+			&& y >= car_array[i][j].cut6 && y <= (car_array[i][j].cut6 + car_array[i][j].cut4)){
+				 console.log("hit by car");
+				 return 1;
+				}
+	}	
+}
+for(i in log_array){
+	for(j in log_array[i]){
+			if( x >= log_array[i][j].cut5 && x <= (log_array[i][j].cut5 + log_array[i][j].cut3)
+			&& y >= log_array[i][j].cut6 && y <= (log_array[i][j].cut6 + log_array[i][j].cut4)){
+				 console.log("on log");
+				 return 2;
+				}
+	}	
+}
+return 0;
+}
 
 function log(num,x,y)
 {
@@ -218,9 +246,6 @@ for(var i = 0; i < 5; i++){
 //left right left right left
 }
 
-function move_frog(){
-
-}
 
 function frog(x,y){	//d is the direction
 this.forward = function(){
@@ -306,6 +331,7 @@ function move(){
 			log_array[i][2].left();
 		}
 	}
+	collision()
 }
 
 
