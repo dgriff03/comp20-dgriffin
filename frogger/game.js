@@ -6,7 +6,7 @@ function start_game(){
 
 var move_value = 10;
 
-function log(small,x,y)
+function log(num,x,y)
 {
 this.left = function(){
 	this.cut5 -= move_value;
@@ -18,7 +18,7 @@ this.right = function(){
 	this.cut5 = in_x(this.cut5);
 	this.draw();
 }
-if(!small){
+if(num == 2){
 	this.cut1=5;
 	this.cut2=166;
 	this.cut3=180;
@@ -26,7 +26,7 @@ if(!small){
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
-else{
+else if(num == 0){
 	this.cut1=5;
 	this.cut2=198;
 	this.cut3=120;
@@ -34,6 +34,31 @@ else{
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
+else if(num == 3){
+	this.cut1=5;
+	this.cut2=230;
+	this.cut3=85;
+	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+else if(num == 1){
+	this.cut1=15;
+	this.cut2=407;
+	this.cut3=70;
+	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+else if(num == 4){
+	this.cut1=15;
+	this.cut2=407;
+	this.cut3=110;
+	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+
 	this.cut5 = x;
 	this.cut6 = y;
 	this.draw = function(){
@@ -62,10 +87,25 @@ return num;
 }
 
 function make_logs(){
+var space;
 for(var i = 0; i < 5; i++){
-	log1 = new log(false,in_x(logx + i * 200),logy + 33 * i);
-	log2 = new log(true,in_x(logx + (i+1) * 200),logy + 33 * i);
-	log3 = new log(false,in_x(logx + (i+2) * 200),logy + 33 * i);
+if(i == 1){
+	space == 100;
+}
+if(i == 3 || i == 4){
+	space = 200;
+}
+else if(i == 0){
+ space = 300;
+}
+else if(i == 2){
+ space = 270;
+}
+	log1 = new log(i,in_x(logx + i * space),logy + 33 * i);
+	if( i != 2){
+		log2 = new log(i,in_x(logx + (i+1) * space),logy + 33 * i);
+	}
+	log3 = new log(i,in_x(logx + (i+2) * space),logy + 33 * i);
 	var row = [log1,log2,log3];
 	log_array[i] = row;
 }
@@ -143,6 +183,13 @@ for(var i = 0; i < 5; i++){
 
 //left right left right left
 }
+
+function frog(d){	//d is the direction
+
+
+
+}
+
 
 function move(){
 	for(i in car_array){
