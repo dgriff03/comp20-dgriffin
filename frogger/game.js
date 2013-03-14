@@ -1,24 +1,25 @@
 function start_game(){
 	initialize();
 	draw_board();
-	setInterval("draw_game()", 100 );
+	setInterval("draw_game()", 50 );
 }
 
-var move_value = 10;
+var move_value = 4;
 
 function log(num,x,y)
 {
 this.left = function(){
-	this.cut5 -= move_value;
+	this.cut5 -= move_value*this.speed;
 	this.cut5 = in_x(this.cut5);
 	this.draw();
 }
 this.right = function(){
-	this.cut5 += move_value;
+	this.cut5 += move_value *this.speed;
 	this.cut5 = in_x(this.cut5);
 	this.draw();
 }
 if(num == 2){
+	this.speed = 1.5;
 	this.cut1=5;
 	this.cut2=166;
 	this.cut3=180;
@@ -27,6 +28,7 @@ if(num == 2){
 	this.cut8=this.cut4;
 }
 else if(num == 0){
+	this.speed = 1.25;
 	this.cut1=5;
 	this.cut2=198;
 	this.cut3=120;
@@ -35,6 +37,7 @@ else if(num == 0){
 	this.cut8=this.cut4;
 }
 else if(num == 3){
+	this.speed = 1;
 	this.cut1=5;
 	this.cut2=230;
 	this.cut3=85;
@@ -43,6 +46,7 @@ else if(num == 3){
 	this.cut8=this.cut4;
 }
 else if(num == 1){
+	this.speed = 1;
 	this.cut1=15;
 	this.cut2=407;
 	this.cut3=70;
@@ -51,6 +55,7 @@ else if(num == 1){
 	this.cut8=this.cut4;
 }
 else if(num == 4){
+	this.speed = 1;
 	this.cut1=15;
 	this.cut2=407;
 	this.cut3=110;
@@ -117,16 +122,17 @@ function car(car_num,x,y)
 {
 
 this.left = function(){
-	this.cut5 -= move_value;
+	this.cut5 -= move_value*this.speed;
 	this.cut5 = in_x(this.cut5,true);
 	this.draw();
 }
 this.right = function(){
-	this.cut5 += move_value;
+	this.cut5 += move_value*this.speed;
 	this.cut5 = in_x(this.cut5,true);
 	this.draw();
 }
-if(car_num == 0){
+if(car_num == 2){
+	this.speed = 1.1;
 	this.cut1=5;
 	this.cut2=265;
 	this.cut3=35;
@@ -135,6 +141,7 @@ if(car_num == 0){
 	this.cut8=this.cut4;
 }
 if(car_num == 1){
+	this.speed = 1.4;
 	this.cut1=46;
 	this.cut2=265;
 	this.cut3=35;
@@ -142,11 +149,30 @@ if(car_num == 1){
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
-if(car_num == 2){
+if(car_num == 0){
+	this.speed = 1;
 	this.cut1=105
 	this.cut2=300
 	this.cut3=45;
 	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+if(car_num == 3){
+	this.speed = 1.3;
+	this.cut1=9
+	this.cut2=300
+	this.cut3=30;
+	this.cut4=22;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+if(car_num == 4){
+	this.speed = 1;
+	this.cut1=81;
+	this.cut2=265;
+	this.cut3=25;
+	this.cut4=25;
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
@@ -168,14 +194,14 @@ for(var i = 0; i < 5; i++){
 		space = 150;
 	}
 	if( i != 0){
-		car1 = new car(i%2,in_x(carx + i * space),cary + 33 * i);
-		car2 = new car(i%2,in_x(carx + (i+1) * space),cary + 33 * i);
-		car3 = new car(i%2,in_x(carx + (i+2) * space),cary + 33 * i);
+		car1 = new car(i,carx + i * space,cary + 33 * i);
+		car2 = new car(i,carx + (i+2) * space,cary + 33 * i);
+		car3 = new car(i,carx + (i+3) * space,cary + 33 * i);
 	}
 	else{
-		car1 = new car(2,in_x(carx),cary + 33 * i);
-		car2 = new car(2,in_x(carx +120),cary + 33 * i);
-		car3 = new car(2,in_x(carx + 2 * 120),cary + 33 * i);
+		car1 = new car(0,in_x(carx),cary + 33 * i);
+		car2 = new car(0,in_x(carx +120),cary + 33 * i);
+		car3 = new car(0,in_x(carx + 2 * 120),cary + 33 * i);
 	}
 	var	row = [car1,car2,car3];
 	car_array[i] = row;
