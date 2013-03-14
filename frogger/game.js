@@ -5,7 +5,7 @@ var frog1;
 function start_game(){
 	img.src = 'assets/frogger_sprites.png';
 	img.onload = function(){
-		frog1 = new frog(0,185,485);
+		frog1 = new frog(185,485);
 		initialize();
 		draw_board();
 		setInterval("draw_game()", 50 );
@@ -222,14 +222,25 @@ function move_frog(){
 
 }
 
-function frog(d,x,y){	//d is the direction
+function frog(x,y){	//d is the direction
 this.forward = function(){
 	this.cut6 -= 34;
+	this.f;
 }
 this.back = function(){
 	this.cut6 += 34;
+	this.b;
 }
-if(d == 0){
+this.right = function(){
+	this.cut5 += 28;
+	this.b;
+}
+this.left = function(){
+	this.cut5 -= 28;
+	this.b;
+}
+
+this.f = function(){
 	this.cut1=10;
 	this.cut2=367;
 	this.cut3=25;
@@ -237,8 +248,33 @@ if(d == 0){
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
 }
+this.b = function(){
+	this.cut1=80;
+	this.cut2=367;
+	this.cut3=25;
+	this.cut4=20;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+this.r = function(){
+	this.cut1=10;
+	this.cut2=334;
+	this.cut3=20;
+	this.cut4=25;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
+this.l = function(){
+	this.cut1=80;
+	this.cut2=334;
+	this.cut3=20;
+	this.cut4=25;
+	this.cut7=this.cut3;
+	this.cut8=this.cut4;
+}
 	this.cut5=x
 	this.cut6=y;
+	this.f();
 this.draw = function(){
 		ctx.drawImage(img,this.cut1,this.cut2,this.cut3,this.cut4,
 		this.cut5,this.cut6,this.cut7,this.cut8);
@@ -294,14 +330,22 @@ function draw_game(){
 	move();
 	frog1.draw();
 }
-//a37 w38 d39 s40
-
  document.addEventListener("keydown", function(event) {
     if (event.keyCode == 38) {
+		frog1.f();
       frog1.forward();
     }
 	if (event.keyCode == 40) {
+		frog1.b();
       frog1.back();
+    }
+	if (event.keyCode == 37) {
+		frog1.l();
+      frog1.left();
+    }
+	if (event.keyCode == 39) {
+		frog1.r();
+      frog1.right();
     }
 	console.log(event.keyCode);
  });
