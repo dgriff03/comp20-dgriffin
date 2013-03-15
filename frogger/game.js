@@ -458,6 +458,9 @@ function draw_game(){
      	start_time = new Date().getTime();
 		frog1 = new frog(185,485);
 		frog_dead = false;    
+		if(lives == 0){
+			end_game();
+		}
 	}
 	if(lives == 0){
 		end_game();
