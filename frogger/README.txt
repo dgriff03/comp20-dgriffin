@@ -30,3 +30,5 @@ does not keep frog on pad across river, can reland on spot across the river
 High Score does not update
 when moving doesn't jump, animates by direction
 if too high a level, then wont detect collision due to skipping past
+
+extra time: approx 9 hours
