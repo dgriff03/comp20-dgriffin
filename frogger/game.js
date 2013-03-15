@@ -428,6 +428,7 @@ function move(){
 
 
 function draw_game(){
+if(!game_over){
 	move_value = 4 * level;
 	ctx.fillStyle = "rgb(19, 19, 70)";
 	ctx.fillRect (0,0, 399, 275);//water
@@ -466,12 +467,13 @@ function draw_game(){
 		end_game();
 	}
 }
+}
 
 function end_game(){
-	ctx.fillText("Game Over", 150, 200);
-	ctx.fillText("Hit Space to play again:", 150, 220);
-	game_over = true;
-	clearInterval(refreshId);
+		ctx.fillText("Game Over", 150, 200);
+		ctx.fillText("Hit Space to play again:", 150, 220);
+		game_over = true;
+		clearInterval(refreshId);
 }
 
  document.addEventListener("keydown", function(event) {
