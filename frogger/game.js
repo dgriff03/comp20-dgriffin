@@ -6,6 +6,8 @@ var time_dead;
 var game_over;
 var move_value;
 var frogs_home;
+var start_time;
+var time;
 
 function start_game(restart){
 	img.src = 'assets/frogger_sprites.png';
@@ -27,6 +29,7 @@ function start(){
 
 
 //returns nothing if dead, returns 2 if on log
+//returns 1 to quit
 function collision(){
 if(!frog_dead){
 var x = frog1.cut5;
@@ -61,14 +64,20 @@ if(y <= 105 && (between(x,10,35) || between(x,95,120) ||
 		death();
 		return 1;
 	}
-else if(y <= 105){
+else if(y <= 105){	//if in pad section and not on water home!
 	across();
+	frog1 = new frog(185,485);
+	start_time = new Date().getTime();
+	frog_dead = false;
+	draw_game();
 }
 return 0;
 }
 }
 
-function across(){
+function across(){	//made it home, update score
+	current_time = new Date().getTime();
+	time = (120000 - (current_time - start_time))/1000;
 	Score += 50;
 	frogs_home++;
 	if(frogs_home == 5){
@@ -76,9 +85,7 @@ function across(){
 		level++;
 		frogs_home -= 5;
 	}
-	frog1.cut5 = 185; frog1.cut6 = 485;
-console.log("won");
-
+	Score += Math.round(time) * 10;
 }
 
 function between(a,b,c){
@@ -304,11 +311,10 @@ for(var i = 0; i < 5; i++){
 	car_array[i] = row;
 }
 
-//left right left right left
 }
 
 
-function frog(x,y){	//d is the direction
+function frog(x,y){
 this.dead = function(){
 	ctx.drawImage(dead,this.cut5,this.cut6,20,25);
 }
@@ -442,10 +448,15 @@ function draw_game(){
 	ctx.font = "12px Arial Bold";
 	ctx.fillText("Score:" + Score, 0, 560);
 	ctx.fillText("High Score" + High_Score, 80, 560);
+	current_time = new Date().getTime();
+	time = (120000 - (current_time - start_time))/1000;
+	if(time <= 0){ death();}
+	ctx.fillText("time: " + time,300, 560);
 	move();
 	frog1.draw();
 	if (frog_dead && (new Date().getTime() - time_dead) > 2000){
-     	frog1 = new frog(185,485);
+     	start_time = new Date().getTime();
+		frog1 = new frog(185,485);
 		frog_dead = false;    
 	}
 	if(lives == 0){
@@ -492,6 +503,7 @@ if(game_over){
  });
 
 function draw_board(){
+		start_time = new Date().getTime();
 		canvas = document.getElementById('game');
 		if(canvas.getContext){
 			ctx = canvas.getContext('2d');
