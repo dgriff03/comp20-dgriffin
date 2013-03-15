@@ -3,8 +3,11 @@ var dead = new Image();
 var frog1;
 var frog_dead;
 var time_dead;
+var game_over;
+var move_value;
+var frogs_home;
 
-function start_game(){
+function start_game(restart){
 	img.src = 'assets/frogger_sprites.png';
 	img.onload = function(){
 	dead.src = 'assets/dead_frog.png';
@@ -12,48 +15,77 @@ function start_game(){
 		frog1 = new frog(185,485);
 		initialize();
 		draw_board();
-		setInterval("draw_game()", 50 );
+		start();
 	}
 	}
 }	
 
-var move_value = 4;
+function start(){
+	setInterval("draw_game()", 50 );
+}
 
 
-//returns 0 if no collision
-//returns 1 if hits car or hits water
-//returns 2 if hits log --must also be on water
-//returns 3 if hits end
+
+//returns nothing if dead, returns 2 if on log
 function collision(){
 if(!frog_dead){
 var x = frog1.cut5;
 var y = frog1.cut6;
+if(x < 0 || x > 400 || y >=500 || y < 55){
+	death();
+	return 1;
+}
 for(i in car_array){
 	for(j in car_array[i]){
 			if( x >= car_array[i][j].cut5 && x <= (car_array[i][j].cut5 + car_array[i][j].cut3)
 			&& y >= car_array[i][j].cut6 && y <= (car_array[i][j].cut6 + car_array[i][j].cut4)){
-				 console.log("hit by car");
 				 death();
 				 return 1;
 				}
 	}
 }
-}
 for(i in log_array){
 	for(j in log_array[i]){
 			if( x >= log_array[i][j].cut5 && x <= (log_array[i][j].cut5 + log_array[i][j].cut3)
 			&& y >= log_array[i][j].cut6 && y <= (log_array[i][j].cut6 + log_array[i][j].cut4)){
-				 console.log("on log");
 				 return 2;
 				}
 	}	
 }
 if( y >= 105 && y <= 275){
-console.log("on water");
-death();
-return 1;
+	death();
+	return 1;
+}
+if(y <= 105 && (between(x,10,35) || between(x,95,120) || 
+	between(x,175,205) || between(x,255,290) || between(x,340,365))){
+		death();
+		return 1;
+	}
+else if(y <= 105){
+	across();
 }
 return 0;
+}
+}
+
+function across(){
+	Score += 50;
+	frogs_home++;
+	if(frogs_home == 5){
+		Score += 1000;
+		level++;
+		frogs_home -= 5;
+	}
+	frog1.cut5 = 185; frog1.cut6 = 485;
+console.log("won");
+
+}
+
+function between(a,b,c){
+if(a <= c && a >= b){
+	return true
+}
+return false
 }
 
 function death(){
@@ -63,24 +95,19 @@ function death(){
 
 }
 
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-
-  }
-}
-
 function log(num,x,y)
 {
 this.left = function(){
 	this.cut5 -= move_value*this.speed;
-	this.cut5 = in_x(this.cut5);
+	this.cut5 = in_x(this.cut5,this.type);
 	this.draw();
+	this.movement = -1 * move_value*this.speed;
 }
 this.right = function(){
 	this.cut5 += move_value *this.speed;
-	this.cut5 = in_x(this.cut5);
+	this.cut5 = in_x(this.cut5,this.type);
 	this.draw();
+	this.movement = move_value*this.speed;
 }
 if(num == 2){
 	this.speed = 1.5;
@@ -117,6 +144,7 @@ else if(num == 1){
 	this.cut4=20;
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
+	this.type = "tur";
 }
 else if(num == 4){
 	this.speed = 1;
@@ -126,6 +154,7 @@ else if(num == 4){
 	this.cut4=20;
 	this.cut7=this.cut3;
 	this.cut8=this.cut4;
+	this.type = "tur";
 }
 
 	this.cut5 = x;
@@ -136,10 +165,14 @@ else if(num == 4){
 	}
 }
 
-function in_x(num,car){
-var divider = 1000;
+function in_x(num,type){
+var divider = 800;
 var off = -180;
-if(car){
+if(type == "tur"){
+	off = -100;
+	divider = 500;
+}
+if(type == "car"){
 	off = -35;
 	divider = 600;	
 }
@@ -158,16 +191,16 @@ return num;
 function make_logs(){
 var space;
 for(var i = 0; i < 5; i++){
-if(i == 1){
+if(i == 1 || i == 4){
 	space == 100;
 }
-if(i == 3 || i == 4){
+if(i == 3){
 	space = 200;
 }
-else if(i == 0){
+if(i == 0){
  space = 300;
 }
-else if(i == 2){
+if(i == 2){
  space = 270;
 }
 	log1 = new log(i,in_x(logx + i * space),logy + 33 * i);
@@ -187,12 +220,12 @@ function car(car_num,x,y)
 
 this.left = function(){
 	this.cut5 -= move_value*this.speed;
-	this.cut5 = in_x(this.cut5,true);
+	this.cut5 = in_x(this.cut5,"car");
 	this.draw();
 }
 this.right = function(){
 	this.cut5 += move_value*this.speed;
-	this.cut5 = in_x(this.cut5,true);
+	this.cut5 = in_x(this.cut5,"car");
 	this.draw();
 }
 if(car_num == 2){
@@ -344,8 +377,18 @@ this.draw = function(){
 
 }
 
+function in_row(){
+var y = frog1.cut6;
+for(var i = 0; i < 560; i += 34){
+	if(y < i){
+		return i/34;
+	}
+}
+
+}
 
 function move(){
+	var on_log;
 	for(i in car_array){
 		if(i%2 == 0){
 			car_array[i][0].left();
@@ -368,11 +411,18 @@ function move(){
 			log_array[i][2].left();
 		}
 	}
-	collision()
+	var on_log = collision();
+	in_row();
+	if(!frog_dead && on_log){
+		var rw = in_row();
+		rw -= 4;
+		frog1.cut5 += log_array[rw][0].movement;
+	}
 }
 
 
 function draw_game(){
+	move_value = 4 * level;
 	ctx.fillStyle = "rgb(19, 19, 70)";
 	ctx.fillRect (0,0, 399, 275);//water
 	ctx.drawImage(img,12,12,327,40,15,15,325,40);	//frogger
@@ -381,27 +431,41 @@ function draw_game(){
 	ctx.fillRect (0,309,399,255);//road 166
 	ctx.drawImage(img,0,119,399,35,0,275,399,35); //side road top
 	ctx.drawImage(img,0,119,399,35,0,475,399,35);//side road bottom
-	ctx.drawImage(img,10,335,25,20,0,516,20,15);//life1
-	ctx.drawImage(img,10,335,25,20,20,516,20,15);//life2
-	ctx.drawImage(img,10,335,25,20,40,516,20,15);//life3
+	if(lives >= 1){ctx.drawImage(img,10,335,25,20,0,516,20,15);}//life1
+	if(lives >= 2){ctx.drawImage(img,10,335,25,20,20,516,20,15);}//life2
+	if(lives >= 3){ctx.drawImage(img,10,335,25,20,40,516,20,15);}//life3
+	if(lives >= 4){ctx.drawImage(img,10,335,25,20,60,516,20,15);}//life4
+	if(lives >= 5){ctx.drawImage(img,10,335,25,20,80,516,20,15);}//life5
 	ctx.fillStyle="rgb(51, 204, 0)";
 	ctx.font = "24px Arial Bold";
-	ctx.fillText("Level" + Level, 60, 530);
+	ctx.fillText("Level" + level, 100, 530);
 	ctx.font = "12px Arial Bold";
 	ctx.fillText("Score:" + Score, 0, 560);
-	ctx.fillText("High Score" + High_Score, 50, 560);
+	ctx.fillText("High Score" + High_Score, 80, 560);
 	move();
 	frog1.draw();
 	if (frog_dead && (new Date().getTime() - time_dead) > 2000){
      	frog1 = new frog(185,485);
 		frog_dead = false;    
 	}
+	if(lives == 0){
+		end_game();
+	}
 }
+
+function end_game(){
+	ctx.fillText("Game Over", 150, 200);
+	ctx.fillText("Hit Space to play again:", 150, 220);
+	game_over = true;
+	clearInterval(refreshId);
+}
+
  document.addEventListener("keydown", function(event) {
-if(!frog_dead){
+if(!frog_dead && !game_over){
 	if (event.keyCode == 38) {
 		frog1.f();
-      frog1.forward();
+		frog1.forward();
+		Score += 10;
     }
 	if (event.keyCode == 40) {
 		frog1.b();
@@ -415,8 +479,17 @@ if(!frog_dead){
 		frog1.r();
       frog1.right();
     }
-	console.log(event.keyCode);
-} });
+}
+if(game_over){
+	if (event.keyCode == 32) {
+		lives = 5;
+		Score = 0;
+		level = 1;
+		game_over = false;
+		draw_board();
+    }
+}
+ });
 
 function draw_board(){
 		canvas = document.getElementById('game');
@@ -435,12 +508,14 @@ function initialize(){
 	car_array = new Array();
 	cur_time = new Date();
 	frog_dead = false;
+	game_over = false;
 	logx = 15; logy = 110;
 	carx = 20; cary = 315;
 	make_logs();
 	make_cars();
+	frogs_home = 0;
 	lives = 5;
-	Level = 1;
+	level = 1;
 	Score = 0;
 	High_Score = 0;
 }
