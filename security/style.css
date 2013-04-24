@@ -1,0 +1,135 @@
+/*** ADD MEYERS RESET for css ***/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/** Globals **/
+html,body {
+	height: 100%;
+}
+
+body{
+	margin: 0;
+	background-repeat:no repeat;
+	background-color:#EEE685;
+    z-index: -1;
+	background-size: 100%;
+}
+
+
+ul,li,p,h1,h2,.name,.textbox,#map_header,.description {
+	font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+    font-size: medium; 
+    color: #000;
+}
+
+.bio p {
+	text-indent:50px;
+}
+
+h1 {
+	font-size:30px;
+	margin: 25px 0 0 35px;
+}
+
+.clear {
+	clear: both;
+}
+
+/** Header Section **/
+
+.header {
+	width:100%;
+	min-height:75px;
+	background-color:#CC9900;
+}
+	
+	.header h1, .header h2 {
+		font-weight:bold;
+	}
+	
+	.header h1,.header h2,.header .navigation {
+		float: left;
+	}
+	
+	.header h2, .header .navigation {
+		margin: 35px 0 0 50px;
+	}
+	
+		.header .navigation a {
+			padding-left: 10px; 
+			text-decoration: none;
+		}
+		
+		.header .navigation a:hover {
+			text-decoration: underline;
+		}
+
+
+.mainContent {
+	margin: 25px 0 0 25px;
+	padding-bottom: 25px;
+	width:auto;
+}
+
+	.mainContent h2{
+		margin: 20px 0 20px 0;
+		text-decoration: underline;
+		font-weight:bold;
+	}
+	
+	.mainContent p{
+		margin: 0 20px 10px 20px;
+	}
+
+
+#back_to_top{
+	position:fixed;
+	top:50;
+	right:50;
+}
