@@ -81,41 +81,80 @@
 
 					<h3>2:No Source Validation</h3>
 					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
-					<p>Severity: <span class="medium">Medium</span>  -- This allows any user to submit site information. This prevents data integrity as any
-					 person could submit a high score even if not achieved in game. It also amplifies the accessibility of the issues below.</p>
-					<p>Descirption: This issue allows any user to post to the site. using a mere html forum, even a local file such as <a href='post.html'>this</a>! </p>
-					<p>Resolution: </p>
+					<p>Severity: <span class="high">High</span>  -- This allows ANYONE to put ANYTHING in the database</p>
+					<p>Descirption: This issue allows any user to post to the site. using a mere html forum, even a local file such as <a href='post.html'>this</a>! This simple issue ruins the integrity of all stored codes for any game hosted on this site. This is a high threat because this also 
+						allows for issues 4 and 5 to be more readily taken advantage.</p>
+					<p>Resolution: FIx these lines of code:
+						<div class="code">
+							response.header('Access-Control-Allow-Origin','*');<br/>
+							response.header("Access-Control-Allow-Headers", "X-Requested-With");
+						</div>
+					</p><p class="indent">
+						by replacing the '*' with specific sites which are trusted to have this promission. The '*' allows all sites to access abuse this system.
+					</p>
 
 					<h3>3:No Text Length Check</h3>
 					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
-					<p>Severity: <span class="medium">Medium</span>  --  </p>
-					<p>Descirption: </p>
-					<p>Resolution: </p>
+					<p>Severity: <span class="high">High</span>  -- This could mess up formatting or more importantly overload data storage size </p>
+					<p>Descirption:  The user can enter a string of any length which could overload the data storage with
+					size restrictions and cause issues with the web display. To test this a 5 paragraph lorum ipson text was inserted as both the game
+					title and the username. The results are bellow. </p>
+					<img src='images/lorum_ipsum.png' alt="bad input result" height="350" width="624">
+					<p class='indent'> It is easy to see the displacement of the table causing difficulty reading. If exclsively used for a name it could
+						also be fed back to a game as data causing issues. If the length of the string of was long enough (perhapse the size of the phonebook)
+						and submitted multiple times by a script it could fill the database quickly.
+					</p>
+					<p>Resolution: Pick a maximum name and game length, perhapse 15. Check if the variable.length(); is less than or equal to 15. If
+						and only if it is true submit the data to the database. As this is done on the web server after the information is recieved 
+						a tool like burpsuite will not be able to intercept and modify it.</p>
 
 					<h3>4:No Input Type Valiation </h3>
 					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
-					<p>Severity: <span class="low">Low</span>  --  </p>
-					<p>Descirption: </p>
-					<p>Resolution: </p>
+					<p>Severity: <span class="low">Low</span>  -- This allows the user to put in any type of data, which may effect appearance and minimal results.
+					 There will be minimal damage as a result from this type of attack. </p>
+					<p>Descirption: The example which was tested was inserting a string of BAD INPUT into the score section. Although thes site has some code to
+					catch this type of error it did not work. The result is displayed below:</p>
+					<img src='images/bad_input_result.png' alt="bad input result" height="350" width="624">
+					 <p class='indent'> This displays NaN as the score value is expected to be an integer. While this could result in some errors, after 10 real 
+					 	scores are collected it would not be returned as it is sorted to the bottom. It would then become merely an aesthetic point.
+					 </p>
+					<p>Resolution: When taking input, check if the Intparse value is equal to the original. If it is not, do not accept the input.</p>
 
 					<h3>5:No Script/html Input Prevention</h3>
 					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
-					<p>Severity: <span class="high">High</span>  --  </p>
-					<p>Descirption: </p>
-					<p>Resolution: </p>
+					<p>Severity: <span class="high">High</span>  -- Anyone could upload a script to redirect to another website, put ads or pop ups or
+					 any number of things with javascript.  </p>
+					<p>Descirption: By having the ability to submit scripts the to the webpage that could be displayed, the user is given the ability to completely
+						change the page. Two examples are displayed below and are light weight versions of attacks that could occur. Page redirectes, infite pop 
+						ups changed content are all very possible options. Bellow a single pop-up display shows a very easy attack. The second example bellow shows
+						how someone could get an add displayed, or in this case it is a twitter feed.</p>
+						<img src='images/script_after.png' alt="bad input result" height="350" width="624">
+						<p class='indent'>The pop up code is:
+							<div class="code">
+								&ltscript&gtalert(‘Please increase your web security’);&lt/script&gt
+							</div>
+						<img src='images/script_twitter.png' alt="bad input result" height="350" width="624">
+						<p class='indent'>The twitter code is:
+							<div class="code">
+								&lta class="twitter-timeline" href="https://twitter.com/TheBeaconHipHop" data-widget-id="315296102532386816"&gtTweets by @TheBeaconHipHop&lt/a&gt &ltscript&gt!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");&ltscript&gt
+							</div>
+					<p>Resolution: A simple cleanup function on the webserver can help prevent errors such as this. Run any text that comes from the database (for
+						extra safety) but more importantly anything that is used from the user must first be sanitized. Whether just displayed or stored, sanitize.
+						Some example code is bellow.
+						<div class="code"> 
+							function encodeHTML(s) {<br/>
+							    return s.replace(/&amp/g, '&amp;').replace(/&lt/g, '&lt;').replace(/&quot/g, '&quot;'');<br/>
+							    //http://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript<br/>
+							}
+							//note this code will look different displayed as the substitution values are converted (& a m p is displayed as &)
+						</div>
+
+					</p>
 			 </div> 
 		</p>
 		<a name = "Conclusion"></a><h2>Conclusion</h2>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ligula elit, ornare id luctus sed, dictum ut sem. Aenean sed nulla sed tellus dignissim bibendum eu at magna. Suspendisse aliquam est sit amet purus auctor a placerat ligula pellentesque. In hac habitasse platea dictumst. Nam a lectus quis metus rhoncus volutpat vestibulum sed massa. Fusce vitae condimentum enim. Proin vulputate risus pretium justo ornare ultricies.
 
-Nulla eget augue dignissim turpis ornare aliquet congue vel leo. Vivamus sit amet lectus tristique nisl pharetra scelerisque non et tellus. Aenean egestas bibendum nulla pretium mattis. In vel purus ac sem ultricies dictum eget sed mauris. Nunc a elit sit amet tortor cursus sagittis a in eros. Proin lacinia gravida volutpat. Maecenas vel felis nec libero porta auctor. Praesent sollicitudin mi id sem semper iaculis. Nunc purus nulla, rhoncus vel suscipit quis, accumsan at lorem. Nullam a quam erat, eget euismod erat. Ut at ipsum vitae ipsum tincidunt condimentum. Donec quis est at lorem vestibulum volutpat id nec lectus. Nunc justo risus, ornare vel tincidunt ut, malesuada ac orci. Sed ut nisl dui, non sollicitudin purus. Aliquam et varius magna. Donec ac mauris nisl, ac ullamcorper arcu.
-
-Aliquam dui turpis, pharetra sit amet consectetur at, ornare vel nisi. Aenean leo ipsum, gravida at placerat sit amet, blandit a justo. Fusce elementum mauris vel libero condimentum pellentesque id ac ipsum. Vivamus quis tristique mi. Quisque tempor diam at risus tempus mattis. Nunc erat lacus, porta eget gravida et, ullamcorper sed quam. Mauris nec lorem orci, ut facilisis mauris.
-
-Aenean vulputate libero sed eros dictum imperdiet. Etiam nibh nibh, hendrerit vehicula mollis vitae, consequat id tortor. Nulla porta enim ut mi rutrum pulvinar sollicitudin ante gravida. Aenean pharetra, sapien quis gravida consequat, mi neque posuere augue, eget porta lectus quam a sapien. Curabitur a dignissim tellus. Maecenas lectus odio, accumsan vel vestibulum sit amet, vulputate tempor nisi. Ut id ligula vitae eros ultrices sollicitudin. Suspendisse ut adipiscing lacus. Phasellus elementum ornare tellus nec aliquam. Mauris nunc sem, pulvinar non tincidunt nec, iaculis in mauris. Sed sagittis cursus metus, et sollicitudin odio tempor ut.
-
-Nam malesuada diam nec ipsum iaculis vel viverra nunc tempus. Ut velit ante, auctor et hendrerit vitae, mattis sit amet diam. Mauris hendrerit diam non nulla dignissim id dapibus leo convallis. Proin et justo quis nibh iaculis tincidunt. Curabitur id ipsum sed massa pellentesque pellentesque vel et sem. Donec mi tellus, condimentum ac elementum at, elementum et sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In dolor ipsum, tincidunt quis tincidunt in, pulvinar et metus. Nunc urna neque, pellentesque vel egestas nec, lacinia eu neque. Sed ultrices auctor mi, eget condimentum ipsum pellentesque sit amet. Duis ac lectus dapibus sem elementum vulputate.
 		</p>
 	</div>
 </body>

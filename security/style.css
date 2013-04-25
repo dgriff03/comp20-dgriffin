@@ -134,6 +134,10 @@ h1 {
 		text-decoration: underline;
 	}
 
+	.mainContent img{ 
+		padding: 10px 100px;
+	}
+
 .indent{
 	padding:0 0 0 10px;
 }
