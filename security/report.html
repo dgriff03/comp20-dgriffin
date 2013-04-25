@@ -89,7 +89,7 @@
 							response.header('Access-Control-Allow-Origin','*');<br/>
 							response.header("Access-Control-Allow-Headers", "X-Requested-With");
 						</div>
-					</p><p class="indent">
+					</p><p>
 						by replacing the '*' with specific sites which are trusted to have this promission. The '*' allows all sites to access abuse this system.
 					</p>
 
@@ -100,7 +100,7 @@
 					size restrictions and cause issues with the web display. To test this a 5 paragraph lorum ipson text was inserted as both the game
 					title and the username. The results are bellow. </p>
 					<img src='images/lorum_ipsum.png' alt="bad input result" height="350" width="624">
-					<p class='indent'> It is easy to see the displacement of the table causing difficulty reading. If exclsively used for a name it could
+					<p> It is easy to see the displacement of the table causing difficulty reading. If exclsively used for a name it could
 						also be fed back to a game as data causing issues. If the length of the string of was long enough (perhapse the size of the phonebook)
 						and submitted multiple times by a script it could fill the database quickly.
 					</p>
@@ -115,7 +115,7 @@
 					<p>Descirption: The example which was tested was inserting a string of BAD INPUT into the score section. Although thes site has some code to
 					catch this type of error it did not work. The result is displayed below:</p>
 					<img src='images/bad_input_result.png' alt="bad input result" height="350" width="624">
-					 <p class='indent'> This displays NaN as the score value is expected to be an integer. While this could result in some errors, after 10 real 
+					 <p> This displays NaN as the score value is expected to be an integer. While this could result in some errors, after 10 real 
 					 	scores are collected it would not be returned as it is sorted to the bottom. It would then become merely an aesthetic point.
 					 </p>
 					<p>Resolution: When taking input, check if the Intparse value is equal to the original. If it is not, do not accept the input.</p>
@@ -129,12 +129,12 @@
 						ups changed content are all very possible options. Bellow a single pop-up display shows a very easy attack. The second example bellow shows
 						how someone could get an add displayed, or in this case it is a twitter feed.</p>
 						<img src='images/script_after.png' alt="bad input result" height="350" width="624">
-						<p class='indent'>The pop up code is:
+						<p>The pop up code inserted is:
 							<div class="code">
 								&ltscript&gtalert(‘Please increase your web security’);&lt/script&gt
 							</div>
 						<img src='images/script_twitter.png' alt="bad input result" height="350" width="624">
-						<p class='indent'>The twitter code is:
+						<p>The twitter code inserted is:
 							<div class="code">
 								&lta class="twitter-timeline" href="https://twitter.com/TheBeaconHipHop" data-widget-id="315296102532386816"&gtTweets by @TheBeaconHipHop&lt/a&gt &ltscript&gt!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");&ltscript&gt
 							</div>
@@ -153,8 +153,16 @@
 			 </div> 
 		</p>
 		<a name = "Conclusion"></a><h2>Conclusion</h2>
-<p>
-
+		<p>
+			Although there is not a large amount of important information stored on this site, if it is to be utilized as a score keeping database there are
+			some very clear improvements that need to be made. As of now the site is vulnerable to give out extra user information, crash do to database
+			overloading, and most importanly become a target of popup ads or site redirects.
+		</p>
+		<p>
+			Based on the extent of security vulnerabilities the site should be repaired before allowing games to use this database. This would require taking 
+			the site off line while it is being repaired so the database is not filled with harmful results. To repair this site the cheapest recommondation that 
+			is suggested is to hire undergraduate students to implement security and pay approximately $100. Undergraduate students are acceptable as the 
+			information that is stored is not very sensitive.
 		</p>
 	</div>
 </body>
