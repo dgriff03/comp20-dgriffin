@@ -138,6 +138,12 @@ h1 {
 	padding:0 0 0 10px;
 }
 
+.code{
+	margin:10px;
+	border:2px dashed #000;
+	padding: 10px;
+}
+
 
 .high{
 	color:red;

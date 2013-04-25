@@ -39,7 +39,7 @@
 			To test the site the code was compiled and run locally so as to prevent any permanent damage to the site. The first test was to write a quick html file locally with a post form to the site. This file was then used as the main testing ground for errors. This checked if there was a “white list” of sites that were allowed to post to the database or if any site could access it. From here the site was tested on its handling of large text-blocks, html text and javascript. The results from searches were also analyzed for possible security issues. Finally, the source code was examined for further security issues. All of these issues were compiled and tested.
 		</p>
 		<p>
-			Software: As of this point the only software used to find these security issues are the html file written to POST to the site and the Sublime Text 2 to view the source code.
+			Software: As of this point the only software used to find these security issues are the html file written to POST to the site and the Sublime Text 2 to view the source code. <a href='http://www.portswigger.net/'>Burpsuite</a> was used to spider the site but no new information was found.
 
 		</p>
 		<a name = "Findings"></a><h2>Abstracts of Findings</h2>
@@ -69,31 +69,37 @@
 			
 			<div class="indent">
 					<h3>1:Too Much Output Information</h3>
-					<p>Location:</p>
-					<p>Severity: <span class="low">Low</span>  --  </p>
-					<p>Descirption: </p>
-					<p>Resolution: </p>
+					<p>Location: <a href='http://scorecenter-je.herokuapp.com/highscores.json'>/highscores.json</a></p>
+					<p>Severity: <span class="low">Low</span>  -- Although the user id should not be output, there is a minimal amount a person could
+						do with this information </p>
+					<p>Descirption: Anyone who requests the top ten scores for a game will recieve the id for every user that submited. The example text is
+						<div class='code'>[{"game_title":"frogger","username":"dan","score":"70","created_at":"undefined",
+							<span class='low'>"_id:"516f4eafd3c7490204000001"</span>}]</div>
+
+					</p>
+					<p>Resolution: Merely remove the line building the json string that includes the user id.</p>
 
 					<h3>2:No Source Validation</h3>
-					<p>Location:</p>
-					<p>Severity: <span class="medium">Medium</span>  --  </p>
-					<p>Descirption: </p>
+					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
+					<p>Severity: <span class="medium">Medium</span>  -- This allows any user to submit site information. This prevents data integrity as any
+					 person could submit a high score even if not achieved in game. It also amplifies the accessibility of the issues below.</p>
+					<p>Descirption: This issue allows any user to post to the site. using a mere html forum, even a local file such as <a href='post.html'>this</a>! </p>
 					<p>Resolution: </p>
 
 					<h3>3:No Text Length Check</h3>
-					<p>Location:</p>
+					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
 					<p>Severity: <span class="medium">Medium</span>  --  </p>
 					<p>Descirption: </p>
 					<p>Resolution: </p>
 
 					<h3>4:No Input Type Valiation </h3>
-					<p>Location:</p>
+					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
 					<p>Severity: <span class="low">Low</span>  --  </p>
 					<p>Descirption: </p>
 					<p>Resolution: </p>
 
 					<h3>5:No Script/html Input Prevention</h3>
-					<p>Location:</p>
+					<p>Location: <a href='http://scorecenter-je.herokuapp.com/submit.json'>/submit.json</a></p>
 					<p>Severity: <span class="high">High</span>  --  </p>
 					<p>Descirption: </p>
 					<p>Resolution: </p>
