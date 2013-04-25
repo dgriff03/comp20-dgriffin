@@ -56,7 +56,7 @@ html,body {
 body{
 	margin: 0;
 	background-repeat:no repeat;
-	background-color:#EEE685;
+	background-color:#FFFAF0;
     z-index: -1;
 	background-size: 100%;
 }
@@ -86,11 +86,12 @@ h1 {
 .header {
 	width:100%;
 	min-height:75px;
-	background-color:#CC9900;
+	background-color:#000;
 }
 	
 	.header h1, .header h2 {
 		font-weight:bold;
+		color:#fff;
 	}
 	
 	.header h1,.header h2,.header .navigation {
@@ -104,6 +105,7 @@ h1 {
 		.header .navigation a {
 			padding-left: 10px; 
 			text-decoration: none;
+			color:#007FFF;
 		}
 		
 		.header .navigation a:hover {
@@ -128,8 +130,26 @@ h1 {
 	}
 
 
+	.mainContent h3{
+		text-decoration: underline;
+	}
+
+
+.high{
+	color:red;
+}
+
+.medium{
+	color:orange;
+}
+
+.low{
+	color:green;
+}
+
 #back_to_top{
 	position:fixed;
 	top:50;
 	right:50;
 }
+
